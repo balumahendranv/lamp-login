@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=poiefsadmin
+      - DB_PASSWORD=Welc0me@PST
+      - DB_NAME=poiefsdb
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: poiefsdb
+      MYSQL_USER: poiefsadmin
+      MYSQL_PASSWORD: Welc0me@PST
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
