@@ -1,14 +1,23 @@
-# Use official PHP image with Apache
-FROM php:8.1-apache
+# Use an official Node.js runtime as a parent image
+FROM node:14
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-# Copy app code to Apache web dir
-COPY . /var/www/html/
+# Copy package.json and package-lock.json to the container
+COPY package*.json ./
 
-# Set correct permissions
-RUN chown -R www-data:www-data /var/www/html
+# Install application dependencies
+RUN npm install
 
-# Expose Apache port
-EXPOSE 80
+# Copy the rest of the application files to the container
+COPY . .
+
+# Build the React app
+RUN npm run build
+
+# Expose port 3000 (assuming your Next.js app runs on port 3000)
+EXPOSE 3000
+
+# Define the command to run your application in development mode
+CMD ["npm", "run", "dev"]
