@@ -1,25 +1,12 @@
 <?php
-$server = "postiefs.mysql.database.azure.com";
-	$username = "postiefsadmin";
-	$pass = "Welc0me@PST";
-	$db = "postiefsdb";
+$host = getenv('DB_HOST');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASSWORD');
+$db   = getenv('DB_NAME');
 
-	if(in_array($_SERVER['HTTP_HOST'],['localhost'])){
-		$server = "localhost";
-		$username = "root";
-		$pass = null;
-		$db = "login-test";
-	}
+$conn = new mysqli($host, $user, $pass, $db);
 
-	//create connection 
-
-	$conn = mysqli_connect($server,$username,$pass,$db);
-
-	//check conncetion
-
-	if($conn->connect_error){
-
-		die ("Connection Failed!". $conn->connect_error);
-	}
-
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 ?>
